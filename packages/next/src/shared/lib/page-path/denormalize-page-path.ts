@@ -9,11 +9,11 @@ import { normalizePathSep } from './normalize-path-sep'
  *  - `/index/foo` -> `/foo`
  *  - `/index/index` -> `/index`
  */
-export function denormalizePagePath(page: string) {
+export function denormalizePagePath(page: string): `/${string}` {
   let _page = normalizePathSep(page)
-  return _page.startsWith('/index/') && !isDynamicRoute(_page)
+  return (_page.startsWith('/index/') && !isDynamicRoute(_page)
     ? _page.slice(6)
     : _page !== '/index'
     ? _page
-    : '/'
+    : '/') satisfies string as any
 }
