@@ -1,8 +1,8 @@
 import { useRouter as useAppRouter } from 'next/navigation'
 import { useRouter as usePagesRouter } from 'next/router'
 
-import type { PoC_Routes } from 'next'
-import type { Route } from './utils'
+import type { PoC_Routes, Route as NextRoute } from 'next'
+import { type Route, createUrl } from './utils'
 
 export namespace AppDir {
   export function useRouter() {

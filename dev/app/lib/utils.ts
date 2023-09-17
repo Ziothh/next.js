@@ -1,6 +1,4 @@
-import { useRouter as useAppRouter } from 'next/navigation'
-import { useRouter as usePagesRouter } from 'next/router'
-import { PoC_Routes, Route as NextRoute } from 'next'
+import type { PoC_Routes, Route as NextRoute } from 'next'
 
 /*
   Utility namespaces
@@ -50,28 +48,51 @@ export namespace Route {
   }
 }
 
-const createRouterUtils = <Routes extends Path.Type>() =>
-  ({
-    createUrl<Path extends Routes>(path: Path, data: Route.Data<Path>) {
-      let url: string = path
+/*
+  Utility functions
+*/
 
-      if ('params' in data)
-        Object.entries<string>(data.params).forEach(
-          ([key, value]) => (url = url.replaceAll(`[${key}]`, value))
-        )
+/** Takes in a File System Routing (FSR) `path` and returns a URL string.
+ *
+ * The function allows for both `app` and `pages` router paths to be passed.
+ *
+ * The `path` gets mutated with the given `data` to create the URL.
+ * - `data.params` is a record containing dynamic route segments.
+ *   E.g. `{ id: '15' }` for `'/todos/[id]'`
+ * - `data.query` is a record containing the query parameters.
+ *   E.g. `{ hello: 'world' }` for `'/todos'` becomes `'/todos?hello=world'`
+ * - `data.hash` is the hash value for the URL.
+ *   E.g. `'section-1'` for `'/todos'` becomes `'/todos#section-1'`
+ *
+ * @example
+ * ```typescript
+ * const myUrl = createUrl('/todos/[id]', {
+ *   params: { id: '15' },
+ *   query: { hello: 'world' },
+ *   hash: 'section-1',
+ * }) // '/todos/15?hello=world#section-1'
+ * ```
+ */
+export function createUrl<Path extends PoC_Routes.AllRoutes>(
+  path: Path,
+  data: Route.Data<Path>
+) {
+  let url: string = path
 
-      const queryEntries =
-        data.query === undefined ? null : Object.entries(data.query)
-      if (queryEntries !== null)
-        queryEntries.forEach(
-          ([key, value], index) =>
-            (url += `${index === 0 ? '?' : '&'}${key}=${encodeURI(value)}`)
-        )
+  if ('params' in data)
+    Object.entries<string>(data.params).forEach(
+      ([key, value]) => (url = url.replaceAll(`[${key}]`, value))
+    )
 
-      if (data.hash !== undefined) url += `#${data.hash}`
+  const queryEntries =
+    data.query === undefined ? null : Object.entries(data.query)
+  if (queryEntries !== null)
+    queryEntries.forEach(
+      ([key, value], index) =>
+        (url += `${index === 0 ? '?' : '&'}${key}=${encodeURI(value)}`)
+    )
 
-      return url as NextRoute<typeof url>
-    },
-  } as const)
+  if (data.hash !== undefined) url += `#${data.hash}`
 
-export const { createUrl } = createRouterUtils<PoC_Routes.AllRoutes>()
+  return url as NextRoute<any>
+}
