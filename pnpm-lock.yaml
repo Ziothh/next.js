@@ -660,6 +660,40 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
 
+  dev/app:
+    dependencies:
+      '@types/node':
+        specifier: 20.2.5
+        version: 20.2.5
+      '@types/react':
+        specifier: 18.2.7
+        version: 18.2.7
+      '@types/react-dom':
+        specifier: 18.2.4
+        version: 18.2.4
+      next:
+        specifier: link:../../packages/next
+        version: link:../../packages/next
+      react:
+        specifier: link:../../node_modules/react
+        version: link:../../node_modules/react
+      react-dom:
+        specifier: link:../../node_modules/react-dom
+        version: link:../../node_modules/react-dom
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
+  dev/lib:
+    dependencies:
+      next:
+        specifier: 13.4.20-canary.21
+        version: link:../../packages/next
+    devDependencies:
+      typescript:
+        specifier: ^5.1.6
+        version: 5.2.2
+
   packages/create-next-app:
     devDependencies:
       '@types/async-retry':
@@ -8448,7 +8482,6 @@ packages:
     resolution: {integrity: sha512-G2mHoTMTL4yoydITgOGwWdWMVd8sNgyEP85xVmMKAPUBwQWm9wBPQUmvbeF4V3WBY1P7mmL4BkjQ0SqUpf1snw==}
     dependencies:
       '@types/react': 18.2.7
-    dev: true
 
   /@types/react-is@17.0.3:
     resolution: {integrity: sha512-aBTIWg1emtu95bLTLx0cpkxwGW3ueZv71nE2YFBpL8k/z5czEW8yYpOo8Dp+UUAFAtKwNaOsh/ioSeQnWlZcfw==}
@@ -25976,7 +26009,6 @@ packages:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
     hasBin: true
-    dev: true
 
   /ua-parser-js@0.7.31:
     resolution: {integrity: sha512-qLK/Xe9E2uzmYI3qLeOmI0tEOt+TBBQyUIAh4aAgU05FVYzeZrKUdkAZfBNVGRaHVgV0TDkdEngJSw/SyQchkQ==}

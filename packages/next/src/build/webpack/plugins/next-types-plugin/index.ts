@@ -223,6 +223,14 @@ const routeTypes: Record<
   },
 }
 
+type RoutePath<Path extends string = string> = Path extends `/${string}`
+  ? Path
+  : `/${Path}`
+const routeMap: Record<'app' | 'pages', RoutePath[]> = {
+  pages: [],
+  app: [],
+}
+
 function formatRouteToRouteType(route: string) {
   const isDynamic = isDynamicRoute(route)
   if (isDynamic) {
@@ -422,6 +430,22 @@ declare module 'next' {
 
   export type Route<T extends string = string> =
     __next_route_internal_types__.RouteImpl<T>
+
+
+  /** Used in the prove of concept for this PR */
+  export namespace PoC_Routes {
+    export type AppRoutes = ${
+      routeMap.app.length === 0
+        ? 'never'
+        : routeMap.app.map((route) => `\n      | '${route}'`).join('')
+    }\n
+    export type PageRoutes = ${
+      routeMap.pages.length === 0
+        ? 'never'
+        : routeMap.pages.map((route) => `\n      | '${route}'`).join('')
+    }\n
+    export type AllRoutes = AppRoutes | PageRoutes
+  }
 }
 
 declare module 'next/link' {
@@ -559,6 +583,8 @@ export class NextTypesPlugin {
         )
       )
     )
+
+    routeMap[isApp ? 'app' : 'pages'].push(route)
 
     const { isDynamic, routeType } = formatRouteToRouteType(route)
 
